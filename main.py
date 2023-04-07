@@ -2,67 +2,92 @@ from pyswip import Prolog
 from PIL import Image
 
 prolog = Prolog()
-prolog.consult('kb2.pl')
-
-def detect_type2(type1):
-    print("Shapes of the leaf: ")
-    print("1.Furry, \n2.Round, \n3.Long, \n4.Pointed, \n5.None, \n6.Needle-like, \n7.Feathery, \n8.Wavy, \n9.Elliptical, \n10.Arrow-like, \n11.Lobed, \n12.Split, \n13.Heart-shaped, \n14.Assymmetrical")
-    l_shape = input("Leaf shape (number): ")
-
-    print("Sizes of the leaf: ")
-    print("1.Small, \n2.Medium,\n3.Large, \n4.None ")
-    l_size = input("Leaf size (number): ")
-
-    bushy = input("Is plant bushy?  (yes/no): ")
-
-    stem = input("Size of the stem (high/low): ")
-
-    spikes = input("Plant has spikes? (yes/no): ")
-
-    col_leaf = input("Plant has colored leaf? (yes/no): ")
-
-    plants = []
-
-    query2 = f"plant(Plant, '{type1}', '{l_shape}', '{l_size}', '{bushy}', '{stem}', '{spikes}', '{col_leaf}')"
-    if(list(prolog.query(query2))):
-        for p in prolog.query(query2):
-            plants.append(p['Plant'])
-    
-    return plants
+prolog.consult('kb1.pl')
 
 
 def detect_type():
-    flow = input("Flowers (yes/no): ")
-    fruit = input("Fruits (yes/no): ")
-    water = input("Water Storage (yes/no): ")
-    query = f"type(Type, '{flow}', '{fruit}', '{water}')"
 
-    plants = []
-    if(list(prolog.query(query))):
-        type1 = list(prolog.query(query))[0]["Type"]
-        plants = detect_type2(type1)
+    flow = input("🌸 Does plant have flowers? (y/n): ").lower().strip() == 'y'
+    if(flow): prolog.assertz("hasFlowers(x)")
+    else: prolog.assertz("not(hasFlowers(x))")
+
+    fruit = input("🍋 Does plant have fruits? (y/n): ").lower().strip() == 'y'
+    if(fruit): prolog.assertz("hasFruit(x)")
+    else: prolog.assertz("not(hasFruit(x))")
+
+    water = input("💧 Does plant have water storage in leaves? (y/n): ").lower().strip() == 'y'
+    if(water): prolog.assertz("hasWaterStorage(x)")
+    else: prolog.assertz("not(hasWaterStorage(x))")
+
+    result = list(prolog.query("type(x,Z)"))
+    type = result[0]['Z']
+
+    #############################
+
+    stem_hight = input("🌴 Is the stem(s) of the plant realtivelt long? (y/n): ").lower().strip() == 'y'
+    if(stem_hight): prolog.assertz("hasLongStem(x)")
+    else: prolog.assertz("not(hasLongStem(x))")
+
+    bushy = input("💐 Is the plant bushy? (y/n): ").lower().strip() == 'y'
+    if(bushy): prolog.assertz("isBushy(x)")
+    else: prolog.assertz("not(isBushy(x))")
+
+    result = list(prolog.query("form(x,Z)"))
+    form = result[0]['Z']
+    print(result[0]['Z'])
+
+    ##############################
+
+    print("🍀 Please pick the shape of the leaf: ")
+    print("\t1.Furry, \n\t2.Round, \n\t4.Pointed, \n\t5.None, \n\t7.Feathery, \n\t9.Elliptical, \n\t10.Arrow-like, \n\t13.Heart-shaped, \n\t14.Assymmetrical")
+    l_shape=0
+    while(l_shape<1 or l_shape>13):
+        l_shape = int(input("Leaf shape (number): "))
+        if(l_shape<1 & l_shape>13): print("Invalid input. Try again!\n")
+    prolog.assertz(f"leafForm(x,'{l_shape}')")
+
+    print("🌿 Sizes of the leaf: ")
+    print("\t1.Small, \n\t2.Medium,\n\t3.Large, \n\t4.None ")
+    l_size=0
+    while(l_size<=0 or l_size>4):
+        l_size = int(input("Leaf size (number): "))
+        if(l_size<1 & l_size>4): print("Invalid input. Try again!\n")
+    prolog.assertz(f"leafSize(x,'{l_size}')")
     
-    return plants
+    intrestingLeaf = input("🍁 Does plant have interesting, colored or textured leaf? (y/n): ").lower().strip() == 'y'
+    if(intrestingLeaf): prolog.assertz("interestingLeaf(x)")
+    else: prolog.assertz("not(interestingLeaf(x))")
+
+    spikes = input("🌵 Does plant have spikes? (y/n): ").lower().strip() == 'y'
+    if(spikes): prolog.assertz("hasSpikes(x)")
+    else: prolog.assertz("not(hasSpikes(x))")
+
+    ##############################
+    result = list(prolog.query("plant(x,Z)"))
+    
+    if(len(result)>0):
+        plant = result[0]['Z']
+        
+    else: plant="None"
+    return plant
+    
 
 def showPic(plant):
-    f_plant = plant.replace("'", "").replace(" ", "_")
-    
-    path  = "./pics/{}.jpg".format(f_plant.lower()) #
+    f_plant = plant.replace("'", "").replace(" ", "_") #using plant name as file name
+    path  = "./pics/{}.jpg".format(f_plant.lower())
     im = Image.open(path)
-
-    #show image
-    im.show()
+    im.show() #will open a separate window
     
 def main():
     print("DETECTION OF INDOOR PLANT:")
     print("Please answer questions according to the provided options.\n\n")
-    plants = detect_type()
-    if(len(plants)>0):
-        print("Your plant is most probably: ")
-        for p in plants:
-            print("\t",p)
-            showPic(p)
+
+    plant = detect_type()
+    if(plant!="None"):
+        print("🌟 Your plant is most probably: 🌟")
+        print("\t",plant)
+        showPic(plant)
     else: 
-        print("Sorry, I could not detect your plant.")
+        print("😭 Sorry, I could not detect your plant.")
 
 main()
