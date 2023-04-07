@@ -1,6 +1,9 @@
-### Course Project in Logical Programming 
-### Identification of indoor plant and caring routine
+Project in Logical Programming 
+Identification of indoor plant based on visual parameteres entered by user.
+----------
+To launch locally:
+pip install pyswip
 
-
-## pip install pyswip
-## pip install kivy 
+Requirements:
+Python 3.x
+SWI-Prolog 7.x or 8.x.
