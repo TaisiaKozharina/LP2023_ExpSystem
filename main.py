@@ -5,7 +5,7 @@ prolog = Prolog()
 prolog.consult('kb1.pl')
 
 
-def detect_type():
+def getPlant():
 
     flow = input("🌸 Does plant have flowers? (y/n): ").lower().strip() == 'y'
     if(flow): prolog.assertz("hasFlowers(x)")
@@ -32,26 +32,37 @@ def detect_type():
     if(bushy): prolog.assertz("isBushy(x)")
     else: prolog.assertz("not(isBushy(x))")
 
+    prolog.retractall("hasWaterStorage(x)")
+
     result = list(prolog.query("form(x,Z)"))
-    form = result[0]['Z']
-    print(result[0]['Z'])
+    #print(result[0]['Z'])
 
     ##############################
 
     print("🍀 Please pick the shape of the leaf: ")
-    print("\t1.Furry, \n\t2.Round, \n\t4.Pointed, \n\t5.None, \n\t7.Feathery, \n\t9.Elliptical, \n\t10.Arrow-like, \n\t13.Heart-shaped, \n\t14.Assymmetrical")
+    print("\t1.Furry, \n\t2.Round, \n\t3.Pointed, \n\t4.None, \n\t5.Feathery, \n\t6.Elliptical, \n\t7.Heart-shaped, \n\t8.Assymmetrical")
     l_shape=0
-    while(l_shape<1 or l_shape>13):
-        l_shape = int(input("Leaf shape (number): "))
-        if(l_shape<1 & l_shape>13): print("Invalid input. Try again!\n")
+    while(int(l_shape)<1 or int(l_shape)>8):
+        l_shape = input("Leaf shape (number): ")
+        if(not l_shape.isdigit()): 
+            print("Invalid input. Try again!")
+            l_shape=0
+        elif(int(l_shape)<1 or int(l_shape)>8): 
+            print("Invalid input. Try again!")
+            l_shape=0
     prolog.assertz(f"leafForm(x,'{l_shape}')")
 
     print("🌿 Sizes of the leaf: ")
     print("\t1.Small, \n\t2.Medium,\n\t3.Large, \n\t4.None ")
     l_size=0
-    while(l_size<=0 or l_size>4):
-        l_size = int(input("Leaf size (number): "))
-        if(l_size<1 & l_size>4): print("Invalid input. Try again!\n")
+    while(int(l_size)<=0 or int(l_size)>4):
+        l_size = input("Leaf size (number): ")
+        if(not l_size.isdigit()): 
+            print("Invalid input. Try again!")
+            l_size=0
+        elif(int(l_size)<1 or int(l_size)>4): 
+            print("Invalid input. Try again!")
+            l_size=0
     prolog.assertz(f"leafSize(x,'{l_size}')")
     
     intrestingLeaf = input("🍁 Does plant have interesting, colored or textured leaf? (y/n): ").lower().strip() == 'y'
@@ -66,10 +77,11 @@ def detect_type():
     result = list(prolog.query("plant(x,Z)"))
     
     if(len(result)>0):
-        plant = result[0]['Z']
-        
-    else: plant="None"
-    return plant
+        plants = [d['Z'] for d in result]
+    else: 
+        plants=["None"]
+
+    return plants
     
 
 def showPic(plant):
@@ -82,11 +94,12 @@ def main():
     print("DETECTION OF INDOOR PLANT:")
     print("Please answer questions according to the provided options.\n\n")
 
-    plant = detect_type()
-    if(plant!="None"):
+    plants = getPlant()
+    if(plants[0]!="None"):
         print("🌟 Your plant is most probably: 🌟")
-        print("\t",plant)
-        showPic(plant)
+        for p in plants:  
+            print("\t",p)
+            showPic(p)
     else: 
         print("😭 Sorry, I could not detect your plant.")
 

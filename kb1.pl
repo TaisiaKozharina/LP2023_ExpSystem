@@ -10,7 +10,7 @@
 
 
 type(x,'succelent') :- not(hasFlowers(x)), not(hasFruit(x)), hasWaterStorage(x).
-type(x,'fruiting') :- hasFruit(x), not(hasWaterStorage(x)), !.
+type(x,'fruiting') :- hasFruit(x), not(hasWaterStorage(x)), !. % '!' is full stop, to stop looking for other matches if one has been found. Ony one type per plant
 type(x,'flowering') :- hasFlowers(x), not(hasWaterStorage(x)), !.
 type(x,'decorative_foilage') :- not(hasFlowers(x)), not(hasFruit(x)), not(hasWaterStorage(x)), !.
 
@@ -34,14 +34,14 @@ plant(x,'Burro\'s Tail') :-
 
 plant(x,'Cactus') :-
     type(x, 'succulent'),   
-    ((leafForm(x,'4'), leafSize(x,'1')) ; (leafForm(x,'5'), leafSize(x,'4'))),
+    ((leafForm(x,'3'), leafSize(x,'1')) ; (leafForm(x,'4'), leafSize(x,'4'))),
     form(x, 'misc'),
     hasSpikes(x), 
     not(interestingLeaf(x)).
 
 plant(x, 'Aloe Vera') :-
     type(x, 'succulent'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     leafSize(x,'2'),
     form(x, 'misc'),
     hasSpikes(x), 
@@ -49,17 +49,11 @@ plant(x, 'Aloe Vera') :-
 
 % plant(x,'Cactus') :- %REORGANIZED
 %     type(x, 'succulent'),   
-%     leafForm(x,'4'), 
+%     leafForm(x,'3'), 
 %     leafSize(x,'1'),
 %     form(x, 'misc'),
 %     hasSpikes(x), 
 %     not(interestingLeaf(x)).
-
-plantz(x,'tessst') :-     
-    type(x,'decorative_foilage'), 
-    leafForm(x,'2'), 
-    form(x, 'bush'),
-    interestingLeaf(x).
 
 %%% Foilage 🔽
 
@@ -72,42 +66,42 @@ plant(x,'Panda Plant') :-
 
 plant(x,'Asparagus Fern') :-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'7'), 
+    leafForm(x,'5'), 
     leafSize(x,'1'),
     form(x, 'bushy-tree'),
     interestingLeaf(x).
 
 plant(x,'Boston Fern') :-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'7'), 
+    leafForm(x,'5'), 
     leafSize(x,'3'),
     form(x, 'bushy-tree'),
     interestingLeaf(x).
 
 plant(x,'Bird\'s Nest Fern') :-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'7'), 
+    leafForm(x,'5'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     interestingLeaf(x).
 
 plant(x, 'Calathea') :-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     interestingLeaf(x).
 
 plant(x, 'Cast-Iron Plant') :-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     leafSize(x,'3'),
     form(x, 'bush'),
     not(interestingLeaf(x)).
 
 plant(x, 'Chinese Evergreen') :-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     interestingLeaf(x).
@@ -128,7 +122,7 @@ plant(x,'Peperomia'):-
 
 plant(x,'Croton'):-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     leafSize(x,'3'),
     form(x, 'bush'),
     interestingLeaf(x).
@@ -142,14 +136,14 @@ plant(x,'English Ivy'):-
 
 plant(x,'Dragon Tree'):-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     leafSize(x,'3'),
     form(x, 'bushy-tree'),
     not(interestingLeaf(x)).
 
 plant(x,'Monstera'):-
     type(x, 'decorative_foilage'),   
-    leafForm(x,'13'), 
+    leafForm(x,'7'), 
     leafSize(x,'3'),
     form(x, 'bushy-tree'),
     interestingLeaf(x).
@@ -158,17 +152,17 @@ plant(x,'Monstera'):-
 
 plant(x,'Guiana Chestnut'):-
     type(x, 'fruiting'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     form(x, 'tree').
 
 plant(x,'Citrus tree'):-
     type(x, 'fruiting'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     form(x, 'tree').
 
 plant(x,'Avocado tree'):-
     type(x, 'fruiting'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     form(x, 'tree').
 
 plant(x,'Strawberry'):-
@@ -181,7 +175,7 @@ plant(x,'Strawberry'):-
 
 plant(x,'Orchid'):-
     type(x, 'flowering'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     leafSize(x,'3'),
     form(x, 'tree'),
     not(hasSpikes(x)), 
@@ -189,7 +183,7 @@ plant(x,'Orchid'):-
 
 plant(x,'Anthurium') :-
     type(x, 'flowering'),   
-    leafForm(x,'13'), 
+    leafForm(x,'7'), 
     leafSize(x,'2'),
     form(x, 'tree'),
     interestingLeaf(x).
@@ -203,21 +197,21 @@ plant(x,'Geranium') :-
 
 plant(x,'Peace Lilies') :-
     type(x, 'flowering'),   
-    leafForm(x,'4'), 
+    leafForm(x,'3'), 
     leafSize(x,'3'),
     form(x, 'misc'),
     not(interestingLeaf(x)).
 
 plant(x,'Cyclamen'):-
     type(x, 'flowering'),   
-    leafForm(x,'13'), 
+    leafForm(x,'7'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     interestingLeaf(x).
 
 plant(x,'Jasmine'):-
     type(x, 'flowering'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     leafSize(x,'2'),
     form(x, 'bushy-tree'),
     not(hasSpikes(x)), 
@@ -225,14 +219,14 @@ plant(x,'Jasmine'):-
 
 plant(x,'Begonia'):-
     type(x, 'flowering'),   
-    leafForm(x,'14'), 
+    leafForm(x,'8'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     interestingLeaf(x).
 
 plant(x,'Azalea'):-
     type(x, 'flowering'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     not(hasSpikes(x)), 
@@ -240,7 +234,7 @@ plant(x,'Azalea'):-
 
 plant(x,'Impatien'):-
     type(x, 'flowering'),   
-    leafForm(x,'9'), 
+    leafForm(x,'6'), 
     leafSize(x,'2'),
     form(x, 'bush'),
     hasSpikes(x), 
